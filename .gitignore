@@ -115,3 +115,6 @@ dmypy.json
 
 # .idea files
 *.iml
+project/data/zillow-prize-1/properties_2016.csv
+*.csv
+project/data/zillow-prize-1/zillow_data_dictionary.xlsx

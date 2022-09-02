@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+
 def feature_distribution(data, var, subplot_size: (int, int), width: int = 5, cat: bool = False):
     # Create plotting grid
     n_features = len(var)
@@ -34,6 +35,41 @@ def feature_distribution(data, var, subplot_size: (int, int), width: int = 5, ca
             plot_ax.set(xlabel=col, ylabel="frequency")
 
 
+def plot_missing_values(data, var, subplot_size: (int, int), width: int = 8):
+    features_col = var
+    pct_col = data[var].isnull().mean()*100
+    count_col = data[var].isnull().sum()
+
+    # Create plotting grid
+    n_features = len(data.columns)
+    fig, axs = _get_plotting_grid(width, n_features, subplot_size, style="whitegrid")
+
+    # Create a plot for each grid square
+    plot_row = 0
+    for i, feature in enumerate(var):
+        height = axs.shape[1]
+        plot_col = i % height
+
+        # Move to next row when all cols have been plotted
+        if i != 0 and plot_col == 0:
+            plot_row += 1
+
+        plot_onto = axs[plot_row, plot_col]
+
+        # Mask used to extract values belonging to the current feature
+        # from the missing info dataframe
+        current_feature_mask = features_col == feature
+
+        # Get the current feature missing information
+        missing_info = pct_col[current_feature_mask]
+        plot_onto.set_ylim([0, 100])
+
+        # Show tick every 10%
+        plot_onto.set_yticks(list(range(0, 101, 10)))
+
+        sns.barplot(ax=plot_onto, x=[feature], y=missing_info)
+
+
 def _get_plotting_grid(width: int, tot_cells: int, subplot_size: (int, int),
                        style: str = "ticks", **subplots_kwargs) -> (plt.Figure, np.ndarray):
     """
@@ -61,3 +97,4 @@ def _get_plotting_grid(width: int, tot_cells: int, subplot_size: (int, int),
     fig.subplots_adjust(top=0.95)  # Else fig.suptitle overlaps with the subplots
 
     return fig, axs
+

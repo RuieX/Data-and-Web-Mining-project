@@ -4,7 +4,7 @@ import pandas as pd
 # import project.src.training as tr
 from operator import itemgetter
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
-from category_encoders import LeaveOneOutEncoder
+# from category_encoders import LeaveOneOutEncoder
 from sklearn.feature_selection import RFECV, RFE
 
 def get_missing_info(df: pd.DataFrame) -> pd.DataFrame:

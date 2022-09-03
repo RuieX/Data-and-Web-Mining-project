@@ -44,6 +44,43 @@ def plot_correlation(data, column):
     plt.gcf().clear()
 
 
+def missing_values_plot(data, subplot_size: (int, int),
+                        title: str = "", width: int = 7, **barplot_kwargs):
+
+    # Get dataframe containing missing values information
+    features_col = data.T.columns
+    pct_col = data['Missing pct']
+
+    # Create plotting grid
+    n_features = len(data.T.columns)
+    fig, axs = _get_plotting_grid(width, n_features, subplot_size, style="whitegrid")
+
+    # Create a plot for each grid square
+    plot_row = 0
+    for i, feature in enumerate(data.T.columns):
+        height = axs.shape[1]
+        plot_col = i % height
+
+        # Move to next row when all cols have been plotted
+        if i != 0 and plot_col == 0:
+            plot_row += 1
+
+        plot_onto = axs[plot_row, plot_col]
+
+        # Mask used to extract values belonging to the current feature
+        # from the missing info dataframe
+        current_feature_mask = features_col == feature
+
+        # Get the current feature missing information
+        missing_info = pct_col[current_feature_mask]
+        plot_onto.set_ylim([0, 100])
+
+        # Show tick every 10%
+        plot_onto.set_yticks(list(range(0, 101, 10)))
+
+        sns.barplot(ax=plot_onto, x=[feature], y=missing_info, **barplot_kwargs)
+
+
 def _get_plotting_grid(width: int, tot_cells: int, subplot_size: (int, int),
                        style: str = "ticks", **subplots_kwargs) -> (plt.Figure, np.ndarray):
     """

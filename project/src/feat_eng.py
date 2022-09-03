@@ -8,7 +8,6 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.feature_selection import RFECV, RFE
 
 
-
 def get_features_from_name(df: pd.DataFrame, identifiers: list[str]) -> pd.DataFrame:
     """
     Selects features based on their names.

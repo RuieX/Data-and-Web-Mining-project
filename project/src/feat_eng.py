@@ -8,6 +8,15 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.feature_selection import RFECV, RFE
 
 
+class TrainTestSplit(object):
+    def __init__(self, x_train: pd.DataFrame, x_test: pd.DataFrame,
+                 y_train: np.ndarray, y_test: np.ndarray):
+        self.x_train: pd.DataFrame = x_train
+        self.x_test: pd.DataFrame = x_test
+        self.y_train: np.ndarray = y_train
+        self.y_test: np.ndarray = y_test
+
+
 def get_features_from_name(df: pd.DataFrame, identifiers: list[str]) -> pd.DataFrame:
     """
     Selects features based on their names.

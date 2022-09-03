@@ -37,6 +37,27 @@ def get_features_from_name(df: pd.DataFrame, identifiers: list[str]) -> pd.DataF
     return features
 
 
+def ohe_fit(train_cat_data: pd.DataFrame) -> OneHotEncoder:
+    """
+    Returns a fitted One Hot Encoder based on the provided categorical data
+
+    :param train_cat_data: dataframe containing the categorical features
+    :return: fitted encoder
+    """
+
+    # - sparse=False means the method transform returns an array and not a sparse matrix
+    #       e.g. if the categorical data is a dataframe, it returns an array of lists, where there is a list
+    #       for each column in the dataframe
+    # - "ignore" means it does not raise error if the encoder encounters an unknown category,
+    #       but it instead sets all the value of the known categories to 0
+    ohe = OneHotEncoder(sparse=False, handle_unknown="ignore")
+
+    train_cat_data = _prepare_for_encoding(train_cat_data)
+    ohe.fit(train_cat_data)
+
+    return ohe
+
+
 def ohe_transform(df: pd.DataFrame,
                   cat_features: list[str],
                   ohe: OneHotEncoder) -> pd.DataFrame:
@@ -60,27 +81,6 @@ def ohe_transform(df: pd.DataFrame,
         encoded_df.loc[:, col] = encoded_cat_data[:, i]
 
     return encoded_df
-
-
-def ohe_fit(train_cat_data: pd.DataFrame) -> OneHotEncoder:
-    """
-    Returns a fitted One Hot Encoder based on the provided categorical data
-
-    :param train_cat_data: dataframe containing the categorical features
-    :return: fitted encoder
-    """
-
-    # - sparse=False means the method transform returns an array and not a sparse matrix
-    #       e.g. if the categorical data is a dataframe, it returns an array of lists, where there is a list
-    #       for each column in the dataframe
-    # - "ignore" means it does not raise error if the encoder encounters an unknown category,
-    #       but it instead sets all the value of the known categories to 0
-    ohe = OneHotEncoder(sparse=False, handle_unknown="ignore")
-
-    train_cat_data = _prepare_for_encoding(train_cat_data)
-    ohe.fit(train_cat_data)
-
-    return ohe
 
 
 def _prepare_for_encoding(features: pd.DataFrame) -> pd.DataFrame:

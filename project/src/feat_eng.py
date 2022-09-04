@@ -26,6 +26,40 @@ class TrainTestSplit(object):
         self.x_test.to_csv(f'{dir_path}/x_test.csv', index=False)
         pd.DataFrame(self.y_test).to_csv(f'{dir_path}/y_test.csv', index=False)
 
+    def drop_features(self, features_to_drop: list[str]) -> "TrainTestSplit":
+        x_train = self.x_train.drop(columns=features_to_drop)
+        x_test = self.x_test.drop(columns=features_to_drop)
+
+        return TrainTestSplit(x_train, x_test, self.y_train, self.y_test)
+
+
+def apply_log_scale(data: TrainTestSplit,
+                    features_to_scale) -> TrainTestSplit:
+    to_scale_train = data.x_train[features_to_scale]
+    to_scale_test = data.x_test[features_to_scale]
+
+    # Replace 0 with np.nan so the number is skipped because log(0) = undefined
+    # They will be filled back
+    to_scale_train = to_scale_train.replace(0, np.nan)
+    to_scale_test = to_scale_test.replace(0, np.nan)
+
+    log_scaled_train = pd.DataFrame()
+    log_scaled_test = pd.DataFrame()
+    for f in features_to_scale:
+        log_scaled_train[f] = np.log(to_scale_train[f])
+        log_scaled_test[f] = np.log(to_scale_test[f])
+
+    # Replace nan back with 0s
+    log_scaled_train = log_scaled_train.fillna(value=0)
+    log_scaled_test = log_scaled_test.fillna(value=0)
+
+    # Remove old features and add scaled ones
+    log_scaled = data.drop_features(features_to_drop=features_to_scale)
+    log_scaled.x_train = pd.concat([log_scaled.x_train, log_scaled_train], axis="columns")
+    log_scaled.x_test = pd.concat([log_scaled.x_test, log_scaled_test], axis="columns")
+
+    return log_scaled
+
 
 def get_features_from_name(df: pd.DataFrame, identifiers: list[str]) -> pd.DataFrame:
     """

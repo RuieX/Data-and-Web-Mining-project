@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 # import project.src.utils as utils
@@ -16,18 +17,14 @@ class TrainTestSplit(object):
         self.y_train: np.ndarray = y_train
         self.y_test: np.ndarray = y_test
 
-    def to_csv(self):
-        """
-        Writes 4 .csv files in the provided directory based on the splits
-        of the current instance.
+    def to_csv(self, dir_path: str):
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
 
-        :return:
-        """
-
-        self.x_train.to_csv('../data/x_train.csv', index=False)
-        pd.DataFrame(self.y_train).to_csv('../data/y_train.csv', index=False)
-        self.x_test.to_csv('../data/x_test.csv', index=False)
-        pd.DataFrame(self.y_test).to_csv('../data/y_test.csv', index=False)
+        self.x_train.to_csv(f'{dir_path}/x_train.csv', index=False)
+        pd.DataFrame(self.y_train).to_csv(f'{dir_path}/y_train.csv', index=False)
+        self.x_test.to_csv(f'{dir_path}/x_test.csv', index=False)
+        pd.DataFrame(self.y_test).to_csv(f'{dir_path}/y_test.csv', index=False)
 
 
 def get_features_from_name(df: pd.DataFrame, identifiers: list[str]) -> pd.DataFrame:

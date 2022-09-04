@@ -22,8 +22,8 @@ class TrainTestSplit(object):
             os.mkdir(dir_path)
 
         self.x_train.to_csv(f'{dir_path}/x_train.csv', index=False)
-        pd.DataFrame(self.y_train).to_csv(f'{dir_path}/y_train.csv', index=False)
         self.x_test.to_csv(f'{dir_path}/x_test.csv', index=False)
+        pd.DataFrame(self.y_train).to_csv(f'{dir_path}/y_train.csv', index=False)
         pd.DataFrame(self.y_test).to_csv(f'{dir_path}/y_test.csv', index=False)
 
     def drop_features(self, features_to_drop: list[str]) -> "TrainTestSplit":
@@ -31,6 +31,17 @@ class TrainTestSplit(object):
         x_test = self.x_test.drop(columns=features_to_drop)
 
         return TrainTestSplit(x_train, x_test, self.y_train, self.y_test)
+
+    @staticmethod
+    def from_csv_directory(dir_path: str) -> "TrainTestSplit":
+        x_train = pd.read_csv(f'{dir_path}/x_train.csv')
+        x_test = pd.read_csv(f'{dir_path}/x_test.csv')
+
+        # The y datasets are only one column
+        y_train = pd.read_csv(f'{dir_path}/y_train.csv',).iloc[:, 0].values
+        y_test = pd.read_csv(f'{dir_path}/y_test.csv').iloc[:, 0].values
+
+        return TrainTestSplit(x_train, x_test, y_train, y_test)
 
 
 def apply_log_scale(data: TrainTestSplit,

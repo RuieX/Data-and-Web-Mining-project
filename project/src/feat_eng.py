@@ -57,8 +57,8 @@ def apply_log_scale(data: TrainTestSplit,
     log_scaled_train = pd.DataFrame()
     log_scaled_test = pd.DataFrame()
     for f in features_to_scale:
-        log_scaled_train[f] = np.log(to_scale_train[f])
-        log_scaled_test[f] = np.log(to_scale_test[f])
+        log_scaled_train[f] = np.log10(to_scale_train[f])
+        log_scaled_test[f] = np.log10(to_scale_test[f])
 
     # Replace nan back with 0s
     log_scaled_train = log_scaled_train.fillna(value=0)

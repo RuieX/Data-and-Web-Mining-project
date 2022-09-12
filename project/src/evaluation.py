@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+from math import sqrt
 # import project.src.utils as utils
 # import project.src.training as tr
 from operator import itemgetter
@@ -23,10 +24,7 @@ class Evaluation(object):
     def print_eval(self):
         print("--------------Model Evaluations:--------------")
         print('Mean Absolute Error : {}'.format(self.mae))
-        print()
         print('Mean Squared Error : {}'.format(self.mse))
-        print()
         print('Root Mean Squared Error : {}'.format(self.rmse))
-        print()
         print('R2 : {}'.format(self.r2))
         print()

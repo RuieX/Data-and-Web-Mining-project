@@ -118,3 +118,4 @@ dmypy.json
 project/src/data/zillow-prize-1/properties_2016.csv
 *.csv
 project/src/data/zillow-prize-1/zillow_data_dictionary.xlsx
+*.pkl

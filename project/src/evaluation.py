@@ -8,7 +8,7 @@ from operator import itemgetter
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 # from category_encoders import LeaveOneOutEncoder
 from sklearn.feature_selection import RFECV, RFE
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
 class Evaluation(object):
@@ -19,12 +19,10 @@ class Evaluation(object):
         self.mae = mean_absolute_error(y_real, y_pred)
         self.mse = mean_squared_error(y_real, y_pred)
         self.rmse = sqrt(mean_squared_error(y_real, y_pred))
-        self.r2 = r2_score(y_real, y_pred)
 
     def print_eval(self):
         print("--------------Model Evaluations:--------------")
         print('Mean Absolute Error : {}'.format(self.mae))
         print('Mean Squared Error : {}'.format(self.mse))
         print('Root Mean Squared Error : {}'.format(self.rmse))
-        print('R2 : {}'.format(self.r2))
         print()

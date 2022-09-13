@@ -83,7 +83,7 @@ def missing_values_plot(data, subplot_size: (int, int), width: int = 7, **barplo
 
 def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
                            subplot_size: (int, int), mode: str = "hexbin",
-                           width: int = 2, percentile_range: (float, float) = (0, 100),
+                           width: int = 3, percentile_range: (float, float) = (0, 100),
                            show_legend: bool = True,
                            hexbin_kwargs: dict[str, object] = None,
                            scatter_kwargs: dict[str, object] = None) -> (plt.Figure, np.ndarray):

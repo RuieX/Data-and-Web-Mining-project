@@ -26,3 +26,10 @@ class Evaluation(object):
         print('Mean Squared Error : {}'.format(self.mse))
         print('Root Mean Squared Error : {}'.format(self.rmse))
         print()
+
+
+class EvaluatedModel(object):
+    def __init__(self, model, train_eval: Evaluation, test_eval: Evaluation):
+        self.model = model
+        self.train_eval = train_eval
+        self.test_eval = test_eval

@@ -33,6 +33,8 @@ def plot_feature_distribution(data, var, subplot_size: (int, int), width: int = 
             plot_ax = sns.barplot(ax=plot_onto, data=val_counts, x="index", y=col, palette="pastel")
             plot_ax.set(xlabel=col, ylabel="frequency")
 
+    return fig, axs
+
 
 def plot_correlation(data, column):
     cor_matrix = data[column].corr().abs()

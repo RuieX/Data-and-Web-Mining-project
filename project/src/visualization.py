@@ -107,10 +107,8 @@ def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
     """
 
     # Arg check
-    HEXBIN_MODE = "hexbin"
-    SCATTER_MODE = "scatter"
-    if mode != HEXBIN_MODE and mode != SCATTER_MODE:
-        raise Exception(f"Mode can be either '{HEXBIN_MODE}' or '{SCATTER_MODE}', got {mode}")
+    if mode != "hexbin" and mode != "scatter":
+        raise Exception(f"Mode can be either hexbin or scatter, got {mode}")
 
     if hexbin_kwargs is None:
         hexbin_kwargs = {}
@@ -146,7 +144,7 @@ def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
         plot_onto.set_xlabel(col)
         plot_onto.set_ylabel(y_name)
 
-        if mode == HEXBIN_MODE:
+        if mode == "hexbin":
             hexbin = plot_onto.hexbin(x=x_ranged.values, y=y_ranged.values,
                                       **hexbin_kwargs)
             if show_legend:
@@ -168,6 +166,8 @@ def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
 
                 if legend is not None:
                     legend.remove()
+
+    return fig, axs
 
 
 def feature_target_scatter_plot(data: fe.TrainTestSplit):
@@ -222,8 +222,7 @@ def _get_within_quantile_range(x: pd.Series, y: pd.Series,
     :param upper_q: upper limit of the range
     :return:
     """
-    quantile_range_mask = (x >= x.quantile(lower_q)) & (x <= x.quantile(upper_q)) \
-                          & (y >= y.quantile(lower_q)) & (y <= y.quantile(upper_q))
+    quantile_range_mask = (x >= x.quantile(lower_q)) & (x <= x.quantile(upper_q)) & (y >= y.quantile(lower_q)) & (y <= y.quantile(upper_q))
     x_ranged = x[quantile_range_mask]
     y_ranged = y[quantile_range_mask]
 

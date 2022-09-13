@@ -82,39 +82,9 @@ def missing_values_plot(data, subplot_size: (int, int), width: int = 7, **barplo
 
 
 def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
-                           subplot_size: (int, int), mode: str = "hexbin",
+                           subplot_size: (int, int), alpha, mode: str = "scatter",
                            width: int = 3, percentile_range: (float, float) = (0, 100),
-                           show_legend: bool = True,
-                           hexbin_kwargs: dict[str, object] = None,
-                           scatter_kwargs: dict[str, object] = None) -> (plt.Figure, np.ndarray):
-    """
-    Plots a grid of hexbin plots, each comparing a feature in the provided dataframe with the
-    provided target.
-
-    :param data: dataframe containing the features to compare with the provided variable (x-axis)
-    :param y_var: variable (name, data) to compare with the provided features (y-axis).
-    :param subplot_size: dimension of each subplot in the grid
-    :param width: width (in plots) of the grid
-    :param mode: type of plots to draw, can be either "hexbin" or "scatter"
-    :param percentile_range: range that determines which values will be displayed in the plots.
-        Useful because the presence of outliers makes the chart less clear.
-    :param show_legend: True if legend has to be displayed for each subplot, false otherwise
-    :param hexbin_kwargs: additional parameter to pass to the underlying pyplot.hexbin,
-        used when mode argument is "scatter"
-    :param scatter_kwargs:  additional parameter to pass to the underlying seaborn.scatterplot,
-        used when mode argument is "scatter"
-    :return: (fig, axs) a grid of hexbin or scatter plots
-    """
-
-    # Arg check
-    if mode != "hexbin" and mode != "scatter":
-        raise Exception(f"Mode can be either hexbin or scatter, got {mode}")
-
-    if hexbin_kwargs is None:
-        hexbin_kwargs = {}
-
-    if scatter_kwargs is None:
-        scatter_kwargs = {}
+                           show_legend: bool = True) -> (plt.Figure, np.ndarray):
 
     # Create grid
     n_features = len(data.columns)
@@ -145,8 +115,7 @@ def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
         plot_onto.set_ylabel(y_name)
 
         if mode == "hexbin":
-            hexbin = plot_onto.hexbin(x=x_ranged.values, y=y_ranged.values,
-                                      **hexbin_kwargs)
+            hexbin = plot_onto.hexbin(x=x_ranged.values, y=y_ranged.values,alpha=alpha)
             if show_legend:
                 cb = fig.colorbar(hexbin, ax=plot_onto)
                 cb.set_label('counts')
@@ -158,8 +127,7 @@ def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
             scatter_data[y_name] = y_data
             scatter_data = scatter_data[scatter_data[y_name].isin(y_ranged.values)]
 
-            sns.scatterplot(ax=plot_onto, data=scatter_data, x=col, y=y_name,
-                            **scatter_kwargs)
+            sns.scatterplot(ax=plot_onto, data=scatter_data, x=col, y=y_name, alpha=alpha)
 
             if not show_legend:
                 legend = plot_onto.get_legend()

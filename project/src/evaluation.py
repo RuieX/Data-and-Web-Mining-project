@@ -12,7 +12,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
 class Evaluation(object):
-    def __init__(self,y_real: np.ndarray, y_pred: np.ndarray):
+    def __init__(self, y_real: np.ndarray, y_pred: np.ndarray):
         self.y_pred = y_pred
         self.y_real = y_real
 

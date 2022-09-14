@@ -1,12 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
-# import project.src.utils as utils
-# import project.src.training as tr
-from operator import itemgetter
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-# from category_encoders import LeaveOneOutEncoder
-from sklearn.feature_selection import RFECV, RFE
+from sklearn.preprocessing import OneHotEncoder
 
 
 class TrainTestSplit():

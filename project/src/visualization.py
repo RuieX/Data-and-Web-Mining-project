@@ -107,8 +107,11 @@ def bivariate_feature_plot(data: pd.DataFrame, y_var: (str, pd.Series),
         # Get the data withing the specified percentile range
         lower_q = percentile_range[0] / 100
         upper_q = percentile_range[1] / 100
-        x_ranged, y_ranged = _get_within_quantile_range(x=feature, y=y_data,
-                                                        lower_q=lower_q, upper_q=upper_q)
+
+        quantile_range_mask = (feature >= feature.quantile(lower_q)) & (feature <= feature.quantile(upper_q)) \
+                              & (y_data >= y_data.quantile(lower_q)) & (y_data <= y_data.quantile(upper_q))
+        x_ranged = feature[quantile_range_mask]
+        y_ranged = y_data[quantile_range_mask]
 
         # Set x and y labels to feature and y_var names
         plot_onto = axs[plot_row, plot_col]
@@ -180,21 +183,3 @@ def _get_plotting_grid(width: int, tot_cells: int, subplot_size: (int, int),
     fig.subplots_adjust(top=0.95)  # Else fig.suptitle overlaps with the subplots
 
     return fig, axs
-
-
-def _get_within_quantile_range(x: pd.Series, y: pd.Series,
-                               lower_q: float, upper_q: float) -> (pd.Series, pd.Series):
-    """
-    Returns the (x, y) pairs where both values fall in the specified quantile range.
-
-    :param x: x values
-    :param y: y values
-    :param lower_q: lower limit of the range
-    :param upper_q: upper limit of the range
-    :return:
-    """
-    quantile_range_mask = (x >= x.quantile(lower_q)) & (x <= x.quantile(upper_q)) & (y >= y.quantile(lower_q)) & (y <= y.quantile(upper_q))
-    x_ranged = x[quantile_range_mask]
-    y_ranged = y[quantile_range_mask]
-
-    return x_ranged, y_ranged

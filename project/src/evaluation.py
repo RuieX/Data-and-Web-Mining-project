@@ -3,7 +3,7 @@ from math import sqrt
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
-class Evaluation():
+class Evaluation:
     def __init__(self, y_real: np.ndarray, y_pred: np.ndarray):
         self.y_pred = y_pred
         self.y_real = y_real
@@ -20,7 +20,7 @@ class Evaluation():
         print()
 
 
-class EvaluatedModel():
+class EvaluatedModel:
     def __init__(self, model, train_eval: Evaluation, test_eval: Evaluation):
         self.model = model
         self.train_eval = train_eval

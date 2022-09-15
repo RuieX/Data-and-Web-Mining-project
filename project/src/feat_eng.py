@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 
 
-class TrainTestSplit():
+class TrainTestSplit:
     def __init__(self, x_train: pd.DataFrame, x_test: pd.DataFrame,
                  y_train: np.ndarray, y_test: np.ndarray):
         self.x_train: pd.DataFrame = x_train
